@@ -1,4 +1,4 @@
-export class prenotation
+export class Prenotation
 {
     nome: string
     cognome: string

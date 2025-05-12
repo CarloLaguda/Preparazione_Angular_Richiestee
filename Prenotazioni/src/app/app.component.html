@@ -54,5 +54,17 @@
     <br>
     <button>Prenota</button>
   </div>
+  <div>
+    @if(loading)
+    {
+      <p>Caricamento</p>
+    }
+    <div>
+      @for(pre of prenotazioni; track pre)
+      {
+        <p>{{pre}}</p>
+      }
+    </div>
+  </div>
   
 </div>
