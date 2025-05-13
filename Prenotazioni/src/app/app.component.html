@@ -59,10 +59,11 @@
     {
       <p>Caricamento</p>
     }
+    <h3>Lista Prenotazioni</h3>
     <div>
       @for(pre of prenotazioni; track pre)
       {
-        <p>{{pre}}</p>
+        <app-lista-prenotazioni [prenotazione] = "pre"></app-lista-prenotazioni>
       }
     </div>
   </div>

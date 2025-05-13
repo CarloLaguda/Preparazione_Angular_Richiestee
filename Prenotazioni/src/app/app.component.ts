@@ -4,9 +4,11 @@ import { Prenotation } from './models/Prenotation.model';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ListaPrenotazioniComponent } from './lista-prenotazioni/lista-prenotazioni.component';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, ListaPrenotazioniComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -19,7 +21,6 @@ export class AppComponent implements OnInit {
   http: HttpClient;
   data!: Object;
   loading!: boolean;
-  o! :Observable<Object>;
 
   //Inizializzo l'oggetto HTTP
   constructor(http: HttpClient)
@@ -28,18 +29,22 @@ export class AppComponent implements OnInit {
   }
   
 
-  makeRequest(): void{
+  makeRequest(): void
+  {
     this.loading = true
     this.oPrenotazioni = this.http.get<Prenotation[]>("https://my-json-server.typicode.com/malizia-g/verificaPrenotazioni/prenotazioni")
     this.oPrenotazioni.subscribe(this.getData);
   }
 
-  getData = (data : Prenotation[]) => {
+  getData = (data : Prenotation[]) => 
+  {
     this.prenotazioni = data;
     console.log(this.prenotazioni)
+    this.loading = false
   }
   
-  ngOnInit() {
+  ngOnInit() 
+  {
     this.makeRequest()
   }
 }
