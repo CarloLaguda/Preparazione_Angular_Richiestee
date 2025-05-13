@@ -1,4 +1,13 @@
 <div>
-    <p>{{prenotazione.data}} -- {{prenotazione.ora}}  -->  {{prenotazione.nome}} {{prenotazione.cognome}}</p>
+    <div (click) = "visualizza_dettagli()">
+        <p>{{prenotazione.data}} -- {{prenotazione.ora}}  -->  {{prenotazione.nome}} {{prenotazione.cognome}}</p>
+    </div>
     <hr>
 </div>
+@if(dettagli)
+{
+    <div>
+        <app-dettagli-prenotazione [singoli_dettagli] = "prenotazione"></app-dettagli-prenotazione>
+    </div>
+}
+
