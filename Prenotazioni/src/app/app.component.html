@@ -52,7 +52,10 @@
   </div>
   <div>
     <br>
-    <button>Prenota</button>
+    <button (click) = "makePost(nome, cognome, indirizzo, telefono, email, data, ora)">Prenota</button>
+  </div>
+  <div>
+    <p>{{messaggio}}</p>
   </div>
   <div>
     @if(loading)

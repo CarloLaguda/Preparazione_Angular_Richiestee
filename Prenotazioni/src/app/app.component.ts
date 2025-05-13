@@ -17,11 +17,16 @@ export class AppComponent implements OnInit {
   //Oggetti classe prenottation
   prenotazioni : Prenotation[] = []
   oPrenotazioni! : Observable<Prenotation[]>;
+  dati_post: Object =  JSON.stringify({})// Dati per la post
+  o! : Observable<object>
   //Oggetti per chiamate http
   http: HttpClient;
   data!: Object;
   loading!: boolean;
 
+  a: string = "10/11/12"
+  b:string = "10/11/12"
+  messaggio!:string
   //Inizializzo l'oggetto HTTP
   constructor(http: HttpClient)
   {
@@ -43,6 +48,38 @@ export class AppComponent implements OnInit {
     this.loading = false
   }
   
+  makePost(nome: HTMLInputElement, cognome: HTMLInputElement, indirizzo: HTMLInputElement, telefono: HTMLInputElement, email: HTMLInputElement, data: HTMLInputElement, ora:HTMLInputElement): void
+  {
+    this.loading = true
+    this.dati_post = JSON.stringify({
+      nome: nome.value,
+      cognome: cognome.value,
+      indirizzo: indirizzo.value,
+      telefono: telefono.value,
+      email: email.value,
+      data: data.value,
+      ora: ora.value
+    })
+    this.o = this.http.post("https://my-json-server.typicode.com/malizia-g/verificaPrenotazioni/prenotazioni", this.dati_post)
+    this.o.subscribe(this.postData)
+    nome.value = ""
+    cognome.value = ""
+    indirizzo.value = ""
+    telefono.value = ""
+    email.value = ""
+    data.value = ""
+    ora.value = ""
+  }
+
+  postData = (data: object) =>
+  {
+    console.log(this.a == this.b)
+    this.data = data;
+    console.log(this.data)
+    this.loading = false
+    this.messaggio = "Prenotazione eseguita"
+  }
+
   ngOnInit() 
   {
     this.makeRequest()
