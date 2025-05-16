@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Prenotation } from './models/Prenotation.model';
-import { CommonModule } from '@angular/common';
+import { Prenotation, Response } from './models/Prenotation.model';
+import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ListaPrenotazioniComponent } from './lista-prenotazioni/lista-prenotazioni.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, ListaPrenotazioniComponent],
+  imports: [RouterOutlet, CommonModule, ListaPrenotazioniComponent, JsonPipe, DatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -18,7 +18,9 @@ export class AppComponent implements OnInit {
   prenotazioni : Prenotation[] = []
   oPrenotazioni! : Observable<Prenotation[]>;
   dati_post: Object =  JSON.stringify({})// Dati per la post
-  o! : Observable<object>
+  obsPost = new Observable<Response>;
+  prenotazione!: Prenotation 
+
   //Oggetti per chiamate http
   http: HttpClient;
   data!: Object;
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit {
   
   makePost(nome: HTMLInputElement, cognome: HTMLInputElement, indirizzo: HTMLInputElement, telefono: HTMLInputElement, email: HTMLInputElement, data: HTMLInputElement, ora:HTMLInputElement): void
   {
+    const dataValue = new Date(data.value);
     this.loading = true
     this.dati_post = JSON.stringify({
       nome: nome.value,
@@ -57,11 +60,14 @@ export class AppComponent implements OnInit {
       indirizzo: indirizzo.value,
       telefono: telefono.value,
       email: email.value,
-      data: data.value,
+      data: dataValue,
       ora: ora.value
     })
-    this.o = this.http.post("https://my-json-server.typicode.com/malizia-g/verificaPrenotazioni/prenotazioni", this.dati_post)
-    this.o.subscribe(this.postData)
+    this.prenotazione = new Prenotation(nome.value, cognome.value, indirizzo.value, Number(telefono.value), email.value, dataValue , Number(ora.value))
+
+
+    this.obsPost = this.http.post<Response>("https://my-json-server.typicode.com/malizia-g/verificaPrenotazioni/prenotazioni", this.dati_post)
+    this.obsPost.subscribe(this.postData)
     nome.value = ""
     cognome.value = ""
     indirizzo.value = ""
@@ -71,13 +77,19 @@ export class AppComponent implements OnInit {
     ora.value = ""
   }
 
-  postData = (data: object) =>
+  postData = (data: Response) =>
   {
     console.log(this.a == this.b)
     this.data = data;
     console.log(this.data)
     this.loading = false
     this.messaggio = "Prenotazione eseguita"
+
+    if(data.id > 0 )
+    {
+      this.prenotazioni.push(this.prenotazione);
+    }
+
   }
 
   ngOnInit() 

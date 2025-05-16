@@ -1,6 +1,6 @@
 <div>
     <div (click) = "visualizza_dettagli()">
-        <p>{{prenotazione.data}} -- {{prenotazione.ora}}  -->  {{prenotazione.nome}} {{prenotazione.cognome}}</p>
+        <p>{{ prenotazione.data | date:'dd-MM-yyyy' }} -- {{prenotazione.ora}}  -->  {{prenotazione.nome}} {{prenotazione.cognome}}</p>
     </div>
     <hr>
 </div>

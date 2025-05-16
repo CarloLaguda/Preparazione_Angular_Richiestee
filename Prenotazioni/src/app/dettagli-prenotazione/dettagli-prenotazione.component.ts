@@ -8,5 +8,5 @@ import { Prenotation } from '../models/Prenotation.model';
   styleUrl: './dettagli-prenotazione.component.css'
 })
 export class DettagliPrenotazioneComponent {
-  @Input() singoli_dettagli: Prenotation = new Prenotation("", "", "", 0, "", "", "")
+  @Input() singoli_dettagli!:Prenotation
 }
